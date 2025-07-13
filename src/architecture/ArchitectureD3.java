@@ -182,27 +182,34 @@ public class ArchitectureD3 {
 	 */
 	protected void fillCommandsList() {
 		commandsList = new ArrayList<String>();
-		commandsList.add("add");   //0
-		commandsList.add("sub");   //1
-		commandsList.add("jmp");   //2
-		commandsList.add("jz");    //3
-		commandsList.add("jn");    //4
-		commandsList.add("read");  //5 
-		commandsList.add("store"); //6 
-		commandsList.add("ldi");   //7
-		commandsList.add("inc");   //8		
-		commandsList.add("moveRegReg"); //9 talvez excluir
-//<----->
-		commandsList.add("move");      // 10
-		commandsList.add("jeq");       // 11
-		commandsList.add("jneq");      // 12
-		commandsList.add("jgt");       // 13
-		commandsList.add("jlw");       // 14
-		commandsList.add("call");      // 15
-		commandsList.add("ret");       // 16
-		commandsList.add("imul");      // 17
-		
-		
+		commandsList.add("addMemReg"); //0
+        commandsList.add("addRegMem"); //1
+        commandsList.add("addRegARegB"); //2
+        commandsList.add("addImmReg");   //3
+
+		commandsList.add("subRegARegB");   //4
+        commandsList.add("subMemReg");   //5
+        commandsList.add("subRegMem");   //6
+        commandsList.add("subImmReg");   //7
+
+		commandsList.add("jmp");   //8
+		commandsList.add("jz");    //9
+		commandsList.add("jn");    //10
+		commandsList.add("inc");   //11
+
+		commandsList.add("moveMemReg"); //12
+		commandsList.add("moveRegMem"); //13
+		commandsList.add("moveRegReg"); //14
+		commandsList.add("moveImmReg"); //15
+
+		commandsList.add("jeq");       // 16
+		commandsList.add("jneq");      // 17
+		commandsList.add("jgt");       // 18
+		commandsList.add("jlw");       // 19
+		commandsList.add("call");      // 20
+		commandsList.add("ret");       // 21
+
+
 	}
 
 	
@@ -253,13 +260,38 @@ public class ArchitectureD3 {
 	 * end
 	 * @param address
 	 */
-	public void add() {
+
+	public void addMemReg()
+    {
+
+    }
+
+    public void addRegARegB() {
+
+    }
+
+	public void addRegMem() {
 		
 	}
 	
-	public void sub() {	
+    public void addImmReg() {
+    }
+
+	public void subRegReg()  {	
 	
 	}
+	
+    public void subMemReg() {	
+    
+    }
+
+    public void subRegMem() {
+    
+    }
+
+    public void subImmReg() {
+    
+    }   
 	
 	public void jmp() {	
 	
@@ -273,18 +305,6 @@ public class ArchitectureD3 {
 	
 	}
 	
-	public void read() {
-	
-	}
-	
-	public void store() {
-	
-	}
-	
-	public void ldi() {
-	
-	}
-	
 	public void inc() {
 	
 	}
@@ -292,10 +312,18 @@ public class ArchitectureD3 {
 	public void moveRegReg() {
 	
 	}
+
+    public void moveMemReg() {
+        
+    }
 	
-	public void move() {	
-	
-	}
+    public void moveRegMem() {
+    
+    }
+
+    public void moveImmReg() {
+    
+    }
 	
 	public void jeq() {	
 	
@@ -313,9 +341,6 @@ public class ArchitectureD3 {
 	
 	}
 	
-	public void imul() {
-	
-	}
 	
 	
 		// NÃO TENHO CERTEZA, CERIFICA AQUI TONHO OS CALL E RET
@@ -453,41 +478,71 @@ public class ArchitectureD3 {
 		simulationDecodeExecuteBefore(command);
 		switch (command) {
 		case 0:
-			add();
+			addMemReg();
 			break;
 		case 1:
-			sub();
+			addRegMem();
 			break;
 		case 2:
-			jmp();
+			addRegARegB();
 			break;
 		case 3:
-			jz();
+			addImmReg();
 			break;
 		case 4:
-			jn();
+			subRegARegB();
 			break;
 		case 5:
-			read();
+			subMemReg();
 			break;
 		case 6:
-			store();
+			subRegMem();
 			break;
 		case 7:
-			ldi();
+			subImmReg();
 			break;
 		case 8:
-			inc();
+			jmp();
 			break;
 		case 9:
-			moveRegReg();
+			jz();
 			break;
 		case 10:
+			jn();
+			break;
+		case 11:
 		    call();
 		    break;
-		case 11:
+		case 12:
 		    ret();
 		    break;
+		case 13:
+			inc();
+			break;
+		case 14:
+			moveRegReg();
+			break;
+		case 15:
+			moveRegMem();
+			break;
+		case 16:
+			moveRegARegB();
+			break;
+		case 17:
+			moveImmReg();
+			break;
+		case 18:
+			jeq();
+			break;
+		case 19:
+			jneq();
+			break;
+		case 20:
+			jgt();
+			break;
+		case 21:
+			jlw();
+			break;
 		default:
 			halt = true;
 			break;
