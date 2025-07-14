@@ -29,8 +29,8 @@ public class TestArchitecture {
 //		inc
 //		jn point
 //		end
-		
-		Architecture arch = new Architecture(true);
+
+		ArchitectureD3 arch = new ArchitectureD3(true);
 		arch.getMemory().getDataList()[0]=7;
 		arch.getMemory().getDataList()[1]=2;
 		arch.getMemory().getDataList()[2]=6;
@@ -60,7 +60,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testAdd() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 		//storing the number 5 in position 40
 		arch.getExtbus1().put(40);
 		arch.getMemory().store();
@@ -99,8 +99,8 @@ public class TestArchitecture {
 	
 	@Test
 	public void testSub() {
-		Architecture arch = new Architecture();
-		
+		ArchitectureD3 arch = new ArchitectureD3();
+
 		/*************************
 		 * first test: 5 (rpg) - 8 (mem-40) = -3 (rpg)
 		 ***********************************************/
@@ -227,7 +227,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJmp() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 		//storing the number 10 in PC
 		arch.getIntbus2().put(10);
 		arch.getPC().internalStore();
@@ -255,7 +255,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJz() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 		
 		//storing the number 30 in PC
 		arch.getIntbus2().put(30);
@@ -312,8 +312,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJn() {
-		Architecture arch = new Architecture();
-		
+		ArchitectureD3 arch = new ArchitectureD3();
 		//storing the number 30 in PC
 		arch.getIntbus2().put(30);
 		arch.getPC().internalStore();
@@ -369,7 +368,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testRead() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 		//storing the number 10 in RPG
 		arch.getIntbus1().put(10);
 		arch.getRPG().internalStore();
@@ -411,7 +410,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testStore() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 
 		//storing the number 25 in the memory, in position 31
 		arch.getMemory().getDataList()[31]=25;
@@ -454,7 +453,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testLdi() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 		//storing the number 10 in RPG
 		arch.getIntbus1().put(10);
 		arch.getRPG().internalStore();
@@ -489,7 +488,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testInc() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 		//storing the number 10 in RPG
 		arch.getExtbus1().put(10);
 		arch.getRPG().store();
@@ -518,7 +517,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testMoveRegReg() {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 
 		//storing the number 1 in the memory, in position 31
 		arch.getMemory().getDataList()[31]=1;
@@ -568,9 +567,9 @@ public class TestArchitecture {
 				move %reg0 %reg1 (reg1 <- Reg0)
 		 */
 
-		
-		
-		Architecture arch = new Architecture();
+
+
+		ArchitectureD3 arch = new ArchitectureD3();
 		ArrayList<String> commands = arch.getCommandsList();
 		assertTrue("add".equals(commands.get(0)));
 		assertTrue("sub".equals(commands.get(1)));
@@ -586,7 +585,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testReadExec() throws IOException {
-		Architecture arch = new Architecture();
+		ArchitectureD3 arch = new ArchitectureD3();
 		arch.readExec("testFile");
 		assertEquals(5, arch.getMemory().getDataList()[0]);
 		assertEquals(4, arch.getMemory().getDataList()[1]);
