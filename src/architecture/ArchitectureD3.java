@@ -811,6 +811,58 @@ public class ArchitectureD3 {
     			ula.internalRead(1);
     			PC.internalStore();
     }
+
+	/*
+	
+	*  ----------- Como Funciona o JEQ --------------
+	   ------ PC ++ -----
+	*  1. pc -> intbus2   |         | PC.internalRead();
+	*  2. ula <- intbus2  |         | ula.internalStore();
+	*  3. ula.inc		  |		    | ula.inc();
+	*  4. ula -> intbus2  |         | ula.internalRead();
+	*  5. pc <- intbus2   |         | PC.internalStore();
+	   ------------------
+	*  6. pc -> extbus1             | PC.read();
+	*  7. memory.read() 		    | memory.read();
+	*  8. demux <- extbus1          | demux.setValue(extbus1.get());
+	*  9. registers -> intbus2      | registersInternalRead();
+	* 10. ula <- intbus2            | ula.internalStore(0);
+
+	* 11. ula.inc                   | ula.inc();
+	* 12. ula -> intbus2            | ula.internalRead();
+	* 13. pc <- intbus2             | PC.internalStore();
+	* 14. pc -> extbus1             | PC.read();
+	* 15. memory.read()             | memory.read();
+	* 16. demux <- extbus1          | demux.setValue(extbus1.get());
+	* 17. registers -> intbus2      | registersInternalRead();
+	* 18. ula <- intbus2            | ula.internalStore(1);	
+
+	* 19. ula.sub                   | ula.sub();
+	* 20. ula -> intbus2            | ula.internalRead();
+	* 21. flags <- intbus2          | setStatusFlags(intbus2.get());
+
+	* 22. pc -> intbus2             | PC.internalRead();
+	* 23. ula <- intbus2            | ula.internalStore(1);
+	* 24. ula.inc                   | ula.inc();
+	* 25. ula -> intbus2            | ula.internalRead();
+	* 26. pc <- intbus2             | PC.internalStore();
+	* 27. pc -> extbus1             | PC.read();
+	* 28. memory.read()             | memory.read();
+	* 29. CI: stn(1) ← extbus1      | statusMemory.storeIn1();
+	* 30. ula.inc                   | ula.inc();
+	* 31. ula -> intbus2            | ula.internalRead();
+	* 32. pc <- intbus2             | PC.internalStore();
+	* 33. pc -> extbus1             | PC.read();
+	* 34. CI: stn(0) ← extbus1      | statusMemory.storeIn0();
+	* 35. extbus1 <- flags          | extbus1.put(Flags.getBit(0));
+	
+	* 36. statusMemory -> extbus1   | statusMemory.read();
+	* 37. pc <- extbus1             | PC.store();
+	//-------------- Fim do JEQ ----------------------
+	 * 
+	 *  O JEQ é o comando que faz com que se regA for igual a reg B, o PC aponte para o endereço
+	 *  que está em um endereço de memória.
+	*/
 	
 	public void jeq() {	
         PC.internalRead(); 
@@ -860,7 +912,65 @@ public class ArchitectureD3 {
         PC.store(); 
     }
 	
+	/*
 	
+	*  ----------- Como Funciona o JNEQ --------------
+	   ------ PC ++ -----
+	*  1. pc -> intbus2   |         | PC.internalRead();
+	*  2. ula <- intbus2  |         | ula.internalStore();
+	*  3. ula.inc   	  |		    | ula.inc();
+	*  4. ula -> intbus2  |         | ula.internalRead();
+	*  5. pc <- intbus2   |         | PC.internalStore();
+	   ------------------
+	*  6. pc -> extbus1             | PC.read();
+	*  7. memory.read() 		    | memory.read();
+	*  8. demux <- extbus1          | demux.setValue(extbus1.get());
+	*  9. registers -> intbus2      | registersInternalRead();
+	* 10. ula <- intbus2            | ula.internalStore(0);
+
+	* 11. PC -> intbus2             | PC.internalRead();
+	* 12. ula <- intbus2            | ula.internalStore(1);
+	* 13. ula.inc                   | ula.inc();
+	* 14. ula -> intbus2            | ula.internalRead();
+	* 15. pc <- intbus2             | PC.internalStore();
+
+	* 16. pc -> extbus1             | PC.read();
+	* 17. memory.read()             | memory.read();
+	* 18. demux <- extbus1          | demux.setValue(extbus1.get());
+	* 19. registers -> intbus2      | registersInternalRead();
+	* 20. ula <- intbus2            | ula.internalStore(1);
+
+	* 21. ula.sub                   | ula.sub();
+	* 22. ula -> intbus2            | ula.internalRead();
+	* 23. flags <- intbus2          | setStatusFlags(intbus2.get());
+
+	* 24. pc -> intbus2             | PC.internalRead();
+	* 25. ula <- intbus2            | ula.internalStore(1);
+	* 26. ula.inc                   | ula.inc();
+	* 27. ula -> intbus2            | ula.internalRead();
+	* 28. pc <- intbus2             | PC.internalStore();
+
+	* 29. pc -> extbus1             | PC.read();
+	* 30. memory.read()             | memory.read();
+	* 31. CI: stn(0) ← extbus1      | statusMemory.storeIn0();
+
+	* 32. PC -> intbus2             | PC.internalRead();
+	* 33. ula <- intbus2            | ula.internalStore(1);
+	* 34. ula.inc                   | ula.inc();
+	* 35. ula -> intbus2            | ula.internalRead();
+	* 36. pc <- intbus2             | PC.internalStore();
+	* 37. pc -> extbus1             | PC.read();
+	* 38. CI: stn(1) ← extbus1      | statusMemory.storeIn1();
+
+	* 39. extbus1 <- flags          | extbus1.put(Flags.getBit(0));
+	* 40. statusMemory -> extbus1   | statusMemory.read();
+	* 41. pc <- extbus1             | PC.store();
+	//-------------- Fim do JNEQ ----------------------
+	 * 
+	 *  O JNEQ é o comando que faz com que se regA for diferente de reg B, o PC aponte para o endereço
+	 *  que está em um endereço de memória.
+	*/
+
 	public void jneq() {	
 				PC.internalRead(); 
 				ula.internalStore(1); 
@@ -915,6 +1025,76 @@ public class ArchitectureD3 {
 				PC.store();
 	}
 	
+	/*
+	
+	*  ----------- Como Funciona o JGT --------------
+	   ------ PC ++ -----
+	*  1. pc -> intbus2   |         | PC.internalRead();
+	*  2. ula <- intbus2  |         | ula.internalStore();
+	*  3. ula.inc		  |		    | ula.inc();
+	*  4. ula -> intbus2  |         | ula.internalRead();
+	*  5. pc <- intbus2   |         | PC.internalStore();
+	   ------------------
+	*  6. pc -> extbus1             | PC.read();
+	*  7. memory.read() 		    | memory.read();
+	*  8. demux <- extbus1          | demux.setValue(extbus1.get());
+	*  9. registers -> intbus2      | registersInternalRead();
+	* 10. ula <- intbus2            | ula.internalStore(0);
+
+	* 11. PC -> intbus2             | PC.internalRead();
+	* 12. ula <- intbus2            | ula.internalStore(1);
+	* 13. ula.inc                   | ula.inc();
+	* 14. ula -> intbus2            | ula.internalRead();
+	* 15. pc <- intbus2             | PC.internalStore();
+
+	* 16. pc -> extbus1             | PC.read();
+	* 17. memory.read()             | memory.read();
+	* 18. demux <- extbus1          | demux.setValue(extbus1.get());
+	* 19. registers -> intbus2      | registersInternalRead();
+	* 20. ula <- intbus2            | ula.internalStore(1);
+
+	* 21. ula.sub                   | ula.sub();
+	* 22. ula -> intbus2            | ula.internalRead();
+	* 23. flags <- intbus2          | setStatusFlags(intbus2.get());
+
+	* 24. pc -> intbus2             | PC.internalRead();
+	* 25. ula <- intbus2            | ula.internalStore(1);
+	* 26. ula.inc                   | ula.inc();
+	* 27. ula -> intbus2            | ula.internalRead();
+	* 28. pc <- intbus2             | PC.internalStore();
+	* 29. pc -> extbus1             | PC.read();
+	* 30. memory.read()             | memory.read();
+	* 31. CI: stn(0) ← extbus1      | statusMemory.storeIn0();
+
+	* 32. PC -> intbus2             | PC.internalRead();
+	* 33. ula <- intbus2            | ula.internalStore(1);
+	* 34. ula.inc                   | ula.inc();
+	* 35. ula -> intbus2            | ula.internalRead();
+	* 36. pc <- intbus2             | PC.internalStore();
+	* 37. pc -> extbus1             | PC.read();
+	* 38. CI: stn(1) ← extbus1      | statusMemory.storeIn1();
+
+	* 39. extbus1 <- flags          | extbus1.put(Flags.getBit(1));
+	* 40. IR <- extbus1             | IR.store();
+	* 41. IR -> intbus2             | IR.internalRead();
+	* 42. ula <- intbus2            | ula.internalStore(1);
+	* 43. extbus1 <- flags          | extbus1.put(Flags.getBit(0));
+	* 44. IR <- extbus1             | IR.store();
+	* 45. IR -> intbus2             | IR.internalRead();
+	* 46. ula <- intbus2            | ula.internalStore(0);
+	* 47. ula.add                   | ula.add();
+	* 48. ula -> intbus2            | ula.internalRead(1);
+	* 49. IR <- intbus2             | IR.internalStore();
+	* 50. IR -> extbus1             | IR.read();
+
+	* 51. statusMemory -> extbus1   | statusMemory.read();
+	* 52. pc <- extbus1             | PC.store();
+	//-------------- Fim do JGT ----------------------
+	 * 
+	 *  O JGT é o comando que faz com que se regA for maior que reg B, o PC aponte para o endereço
+	 *  que está em um endereço de memória.
+	*/
+
 	public void jgt() {
 				PC.internalRead();
 				ula.internalStore(1);
@@ -978,6 +1158,65 @@ public class ArchitectureD3 {
 				PC.store();
 	}
 	
+
+	/*
+	
+	*  ----------- Como Funciona o JLW --------------
+	   ------ PC ++ -----
+	*  1. pc -> intbus2   |         | PC.internalRead();
+	*  2. ula <- intbus2  |         | ula.internalStore();
+	*  3. ula.inc 		  |		    | ula.inc();
+	*  4. ula -> intbus2  |         | ula.internalRead();
+	*  5. pc <- intbus2   |         | PC.internalStore();
+	   ------------------
+	*  6. pc -> extbus1             | PC.read();
+	*  7. memory.read() 		    | memory.read();
+	*  8. demux <- extbus1          | demux.setValue(extbus1.get());
+	*  9. registers -> intbus2      | registersInternalRead();
+	* 10. ula <- intbus2            | ula.internalStore(0);
+
+	* 11. PC -> intbus2             | PC.internalRead();
+	* 12. ula <- intbus2            | ula.internalStore(1);
+	* 13. ula.inc                   | ula.inc();
+	* 14. ula -> intbus2            | ula.internalRead();
+	* 15. pc <- intbus2             | PC.internalStore();
+
+	* 16. pc -> extbus1             | PC.read();
+	* 17. memory.read()             | memory.read();
+	* 18. demux <- extbus1          | demux.setValue(extbus1.get());
+	* 19. registers -> intbus2      | registersInternalRead();
+	* 20. ula <- intbus2            | ula.internalStore(1);
+
+	* 21. ula.sub                   | ula.sub();
+	* 22. ula -> intbus2            | ula.internalRead();
+	* 23. flags <- intbus2          | setStatusFlags(intbus2.get());
+
+	* 24. pc -> intbus2             | PC.internalRead();
+	* 25. ula <- intbus2            | ula.internalStore(1);
+	* 26. ula.inc                   | ula.inc();
+	* 27. ula -> intbus2            | ula.internalRead();
+	* 28. pc <- intbus2             | PC.internalStore();
+	* 29. pc -> extbus1             | PC.read();
+	* 30. memory.read()             | memory.read();
+	* 31. CI: stn(0) ← extbus1      | statusMemory.storeIn0();
+
+	* 32. PC -> intbus2             | PC.internalRead();
+	* 33. ula <- intbus2            | ula.internalStore(1);
+	* 34. ula.inc                   | ula.inc();
+	* 35. ula -> intbus2            | ula.internalRead();
+	* 36. pc <- intbus2             | PC.internalStore();
+	* 37. pc -> extbus1             | PC.read();
+	* 38. CI: stn(1) ← extbus1      | statusMemory.storeIn0();
+
+	* 39. extbus1 <- flags          | extbus1.put(Flags.getBit(1));
+	* 40. statusMemory -> extbus1   | statusMemory.read();
+	* 41. pc <- extbus1             | PC.store();
+	//-------------- Fim do JLW ----------------------
+	 * 
+	 *  O JLW é o comando que faz com que se regA for menor que reg B, o PC aponte para o endereço
+	 *  que está em um endereço de memória.
+	*/
+	
 	public void jlw() {
 				PC.internalRead();
 				ula.internalStore(1);
@@ -1030,7 +1269,49 @@ public class ArchitectureD3 {
 	}
 	
 	
+	/*
 	
+	*  ----------- Como Funciona o CALL --------------
+	   ------ PC ++ -----
+	*  1. PC -> intbus2  |          | PC.internalRead();
+	*  2. ula <- intbus2 |          | ula.internalStore(1);
+	*  3. ula.inc        |          | ula.inc();
+	*  4. ula -> intbus2 |          | ula.internalRead(1);
+	*  5. PC <- intbus2  |          | PC.internalStore();
+	   ------------------
+	*  6. PC -> extbus1             | PC.read();
+	*  7. memory.read() 		    | memory.read();
+	*  8. PC <- extbus1             | PC.store();
+
+	*  9. ula.inc                   | ula.inc();
+	* 10. ula -> intbus2            | ula.internalRead(1);
+	* 11. IR <- intbus2             | IR.internalStore();
+	* 12. StkTOP -> extbus1         | StkTOP.read();
+	* 13. memory.store()            | memory.store();
+	* 14. IR -> extbus1             | IR.read();
+	* 15. memory.store()            | memory.store();
+
+	* 16. StkTOP -> intbus2         | StkTOP.read();
+	* 17. IR <- extbus1             | IR.store();
+	* 18. IR -> intbus2             | IR.internalRead();
+	* 19. ula <- intbus2            | ula.internalStore(1);
+	* 20. ula.inc                   | ula.inc();
+	* 21. ula <- intbus2            | ula.internalStore(0);
+	* 22. ula.sub                   | ula.sub();
+	* 23. ula.add                   | ula.add();
+	* 24. ula -> intbus2            | ula.internalRead(1);
+	* 25. IR <- intbus2             | IR.internalStore();
+	* 26. IR -> extbus1             | IR.read();
+	* 27. StkTOP -> extbus1         | StkTOP.store();
+
+	//-------------- Fim do JN ----------------------
+	 * 
+	 *  O JN é o comando que verifica se o bit negativo está ativo, se sim, ele faz com que o PC aponte
+	 *  para o endereço que está no próximo endereço da memória. 
+	 *  O PC já aponta para o próximo endereço, então não é necessário incrementar o PC.
+	 *  A ULA é usada para ler o endereço do PC e armazená-lo na memória.
+	 * 
+	*/
 	
 	public void call() {
 		
@@ -1065,7 +1346,27 @@ public class ArchitectureD3 {
 				StkTOP.store();		
 	}
 
+	/*
 	
+	*  ----------- Como Funciona o RET --------------
+	   ------ PC ++ -----
+	*  1. stkTOP -> extbus1         | StkTOP.read();
+	*  2. IR <- extbus1             | IR.store();
+	*  3. IR -> intbus2             | IR.internalRead();
+	*  4. ula <- intbus2            | ula.internalStore(1);
+	*  5. ula.inc                   | ula.inc();
+	*  6. ula -> intbus2            | ula.internalRead(1);
+	*  7. IR <- intbus2             | IR.internalStore();
+	*  8. IR -> extbus1             | IR.read();
+	*  9. stkTOP <- extbus1         | StkTOP.store();
+	* 10. memory.read()             | memory.read();
+	* 11. pc <- extbus1             | PC.store();
+	//-------------- Fim do RET ----------------------
+	 * 
+	 *  O RET é o comando que retorna de uma chamada de função, ou seja, ele lê o endereço de retorno
+	 * 
+	*/
+
 	public void ret() {
 
 		StkTOP.read();
