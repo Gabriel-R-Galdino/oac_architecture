@@ -1,22 +1,38 @@
 a
 b
-c
-t
-ldi 1
-move %RPG0 %RPG1
-store a
-ldi 3
-store b
-ldi 4
-store c
-read b
-store t
-laco:
-read b
-add t
-store b
-read a
-inc
-store a
-sub c
-jn laco
+move 0 %REG0
+move 1 %REG1
+move 1 %REG2
+move 2 %REG3
+jmp jump
+add %REG1 a
+add %REG2 b
+jump:
+jn negative
+sub %REG0 %REG1
+jn negative
+add %REG1 a
+negative:
+jz zero
+add %REG0 %REG0
+jz zero
+add %REG2 b
+zero:
+jeq %REG0 %REG1 equals
+jeq %REG1 %REG1 equals
+add %REG1 a
+equals:
+jneq %REG1 %REG1 notequals
+jneq %REG0 %REG1 notequals
+add %REG1 a
+notequals:
+jgt %REG0 %REG2 greater
+jgt %REG2 %REG0 greater
+add %REG2 b
+greater:
+jlw %REG2 %REG1 lower
+jlw %REG1 %REG2 lower
+add %REG2 b
+lower:
+move 10 %REG3
+move %REG3 b

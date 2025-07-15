@@ -218,10 +218,6 @@ public class Assembler {
 			parameter1 = tokens[1];
 			parameter2 = tokens[2];
 		}
-		
-		
-	
-		
 		if (commandNumber == 16) { //jeq 16
 			parameter1 = tokens[1];
 			parameter2 = tokens[2];
