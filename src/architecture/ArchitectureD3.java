@@ -293,16 +293,136 @@ public class ArchitectureD3 {
     
     }   
 	
+	/*
+	
+	*  ----------- Como Funciona o JUMP --------------
+	   ------ PC ++ -----
+	*  1. pc -> intus2    |        | PC.internalRead();
+	*  2. ula <- intbus2  |        | ula.internalStore();
+	*  3. ula.incs		  |		   | ula.inc();
+	*  4. ula -> intbus2  |        | ula.internalRead();
+	*  5. pc <- intbus2   |        | PC.internalStore();
+	   ------------------
+	*  6. pc -> extbus1            | PC.internalRead();
+	*  7. memory.read() 		   | memory.read();
+	*  8. PC.store()               | PC.store();
+	//-------------- Fim do JUMP ----------------------
+
+	 * 
+	 *  O JUMP é o comando mais simples, ele apenas faz com que o PC aponte para o endereço
+	 *  que está no próximo endereço da memória. 
+	 *  O PC já aponta para o próximo endereço, então não é necessário incrementar o PC.
+	 *  A ULA é usada para ler o endereço do PC e armazená-lo na memória.
+	  
+	*/
+
 	public void jmp() {	
-	
+		PC.internalRead();
+		ula.internalStore(1);
+		ula.inc();
+		ula.internalRead(1);
+		PC.internalStore();
+		PC.read();
+		memory.read();
+		PC.store();
 	}
+
+	/*
 	
+	*  ----------- Como Funciona o JZ --------------
+	   ------ PC ++ -----
+	*  1. pc -> intus2    |         | PC.internalRead();
+	*  2. ula <- intbus2  |         | ula.internalStore();
+	*  3. ula.incs		  |		    | ula.inc();
+	*  4. ula -> intbus2  |         | ula.internalRead();
+	*  5. pc <- intbus2   |         | PC.internalStore();
+	   ------------------
+	*  6. pc -> extbus1             | PC.internalRead();
+	*  7. memory.read() 		    | memory.read();
+	*  8. CI: stn(1) ← extbus1      | statusMemory.storeIn1();           
+	*  9. ula.inc                   | ula.inc();
+	* 10. ula -> intbus2            | ula.internalRead();
+	* 11. pc <- intbus2             | PC.internalStore();
+	* 12. pc -> extbus              | PC.internalRead();
+	* 13. CI: stn(0) ← extbus1      | statusMemory.storeIn0();
+	* 14. extbus <- flags           | extbus1.put(flags.getBit(1));
+	* 15. statusMemory -> extbus    | statusMemory.read();
+	* 16. pc <- extbus              | PC.internalStore();
+	//-------------- Fim do JZ ----------------------
+	* 
+	 *  O JZ é o comando que verifica se o bit zero está ativo, se sim, ele faz com que o PC aponte
+	 *  para o endereço que está no próximo endereço da memória. 
+	 *  O PC já aponta para o próximo endereço, então não é necessário incrementar o PC.
+	 *  A ULA é usada para ler o endereço do PC e armazená-lo na memória.
+	 * 
+	*/
+
 	public void jz() {	
-	
+		PC.internalRead();
+		ula.internalStore(1);
+		ula.inc();
+		ula.internalRead(1);
+		PC.internalStore();
+		PC.read();
+		memory.read();
+		statusMemory.storeIn1();
+		ula.inc();
+		ula.internalRead(1);
+		PC.internalStore();
+		PC.read();
+		statusMemory.storeIn0();
+		extbus1.put(Flags.getBit(1));
+		statusMemory.read();
+		PC.store();
 	}
+
+	/*
+	
+	*  ----------- Como Funciona o JN --------------
+	   ------ PC ++ -----
+	*  1. pc -> intus2    |         | PC.internalRead();
+	*  2. ula <- intbus2  |         | ula.internalStore();
+	*  3. ula.incs		  |		    | ula.inc();
+	*  4. ula -> intbus2  |         | ula.internalRead();
+	*  5. pc <- intbus2   |         | PC.internalStore();
+	   ------------------
+	*  6. pc -> extbus1             | PC.internalRead();
+	*  7. memory.read() 		    | memory.read();
+	*  8. CI: stn(1) ← extbus1      | statusMemory.storeIn1();
+	*  9. ula.inc                   | ula.inc();
+	* 10. ula -> intbus2            | ula.internalRead();
+	* 11. pc <- intbus2             | PC.internalStore();
+	* 12. pc -> extbus              | PC.internalRead();
+	* 13. CI: stn(0) ← extbus1      | statusMemory.storeIn0();
+	* 14. extbus <- flags           | extbus1.put(Flags.getBit(1));
+	* 15. statusMemory -> extbus    | statusMemory.read();
+	* 16. pc <- extbus              | PC.internalStore();
+	//-------------- Fim do JN ----------------------
+	 * 
+	 *  O JN é o comando que verifica se o bit negativo está ativo, se sim, ele faz com que o PC aponte
+	 *  para o endereço que está no próximo endereço da memória. 
+	 *  O PC já aponta para o próximo endereço, então não é necessário incrementar o PC.
+	 *  A ULA é usada para ler o endereço do PC e armazená-lo na memória.
+	 * 
+	*/
 	
 	public void jn() {
-	
+		PC.internalRead();
+		ula.internalStore(1);
+		ula.inc();
+		ula.internalRead(1);
+		PC.internalStore();
+		PC.read();
+		memory.read();
+		statusMemory.storeIn1();
+		ula.inc();
+		ula.internalRead(1);
+		PC.internalStore();
+		PC.read();
+		statusMemory.storeIn0();
+		extbus1.put(Flags.getBit(1));
+		statusMemory.read();
+		PC.store();
 	}
 	
 	public void inc() {
