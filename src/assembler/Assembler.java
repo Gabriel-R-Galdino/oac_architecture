@@ -14,14 +14,14 @@ import org.hamcrest.core.IsNull;
 
 import components.Register;
 
-import architecture.Architecture;
+import architecture.ArchitectureD3;
 
 public class Assembler {
 	
 	private ArrayList<String> lines;
 	private ArrayList<String> objProgram;
 	private ArrayList<String> execProgram;
-	private Architecture arch;
+	private ArchitectureD3 arch;
 	private ArrayList<String>commands;	
 	private ArrayList<String>labels;
 	private ArrayList<Integer> labelsAdresses;
@@ -35,7 +35,7 @@ public class Assembler {
 		variables = new ArrayList<>();
 		objProgram = new ArrayList<>();
 		execProgram = new ArrayList<>();
-		arch = new Architecture();
+		arch = new ArchitectureD3();
 		commands = arch.getCommandsList();	
 	}
 	
@@ -101,6 +101,7 @@ public class Assembler {
 		   BufferedReader br = new BufferedReader(new		 
 		   FileReader(filename+".dsf"));
 		   String linha;
+		   lines.add("startStk $DEGAS_START_VALUE$");
 		   while ((linha = br.readLine()) != null) {
 			     lines.add(linha);
 			}
@@ -130,7 +131,7 @@ public class Assembler {
 					variables.add(tokens[0]);
 			}
 		}
-		
+		variables.add("$DEGAS_START_VALUE$");
 	}
 
 
@@ -142,50 +143,52 @@ public class Assembler {
 	 */
 	protected void proccessCommand(String[] tokens) {
 		String command = tokens[0];
-		String parameter ="";
+		String parameter1 ="";
 		String parameter2 = "";
+		String parameter3 = "";
+
 		int commandNumber = findCommandNumber(tokens);
 		if (commandNumber == 0) { //must to proccess an add command
-			parameter = tokens[1];
-			parameter = "&"+parameter; //this is a flag to indicate that is a position in memory
+			parameter1 = tokens[1];
+			parameter1 = "&"+parameter1; //this is a flag to indicate that is a position in memory
 		}
 		if (commandNumber == 1) { //must to proccess an sub command
-			parameter = tokens[1];
-			parameter = "&"+parameter;//this is a flag to indicate that is a position in memory		
+			parameter1 = tokens[1];
+			parameter1 = "&"+parameter1;//this is a flag to indicate that is a position in memory		
 		}
 		if (commandNumber == 2) { //must to proccess an jmp command
-			parameter = tokens[1];
-			parameter = "&"+parameter;//this is a flag to indicate that is a position in memory
+			parameter1 = tokens[1];
+			parameter1 = "&"+parameter1;//this is a flag to indicate that is a position in memory
 		}
 		if (commandNumber == 3) { //must to proccess an jz command
-			parameter = tokens[1];
-			parameter = "&"+parameter;//this is a flag to indicate that is a position in memory
+			parameter1 = tokens[1];
+			parameter1 = "&"+parameter1;//this is a flag to indicate that is a position in memory
 		}
 		if (commandNumber == 4) { //must to proccess an jn command
-			parameter = tokens[1];
-			parameter = "&"+parameter;//this is a flag to indicate that is a position in memory
+			parameter1 = tokens[1];
+			parameter1 = "&"+parameter1;//this is a flag to indicate that is a position in memory
 		}
 		if (commandNumber == 5) { //must to proccess an read command
-			parameter = tokens[1];
-			parameter = "&"+parameter;//this is a flag to indicate that is a position in memory
+			parameter1 = tokens[1];
+			parameter1 = "&"+parameter1;//this is a flag to indicate that is a position in memory
 		}
 		if (commandNumber == 6) { //must to proccess an store command
-			parameter = tokens[1];
-			parameter = "&"+parameter;//this is a flag to indicate that is a position in memory
+			parameter1 = tokens[1];
+			parameter1 = "&"+parameter1;//this is a flag to indicate that is a position in memory
 		}
 		if (commandNumber == 7) { //must to proccess an ldi command
-			parameter = tokens[1];
+			parameter1 = tokens[1];
 		}
 		if (commandNumber == 8) { //must to proccess an inc command
 			
 		}
 		if (commandNumber == 9) { //must to proccess an moveRegReg command
-			parameter = tokens[1];
+			parameter1 = tokens[1];
 			parameter2 = tokens[2];
 		}
 		objProgram.add(Integer.toString(commandNumber));
-		if (!parameter.isEmpty()) {
-			objProgram.add(parameter);
+		if (!parameter1.isEmpty()) {
+			objProgram.add(parameter1);
 		}
 		if (!parameter2.isEmpty()) {
 			objProgram.add(parameter2);
