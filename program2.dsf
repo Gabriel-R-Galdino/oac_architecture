@@ -1,0 +1,34 @@
+a
+b
+resultado
+jmp inicio
+verifica:
+sub %REG1 %REG0
+jn menor
+jeq %REG0 %REG1 igual
+ret
+menor:
+move -1 %REG2
+ret
+igual:
+move 0 %REG2
+ret
+maior:
+move 1 %REG2
+ret
+inicio:
+move 5 %REG0
+move 3 %REG1
+call verifica
+move %REG2 resultado
+move resultado %REG3
+jeq %REG3 %REG3 continua
+jmp fim
+continua:
+add resultado %REG0
+add %REG0 a
+add a b
+sub 10 %REG0
+jz fim
+jn fim
+fim:

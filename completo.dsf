@@ -1,0 +1,43 @@
+a
+b
+jmp main
+retorna:
+ret
+soma:
+inc %REG3
+jlw %REG3 %REG2 chamasoma
+ret
+chamasoma:
+call soma
+ret
+main:
+move 2 %REG0
+move %REG0 %REG1
+move %REG1 b
+move b %REG2
+inc %REG3
+add 3 %REG2
+add %REG2 b
+add b %REG0
+add %REG0 %REG1
+sub 16 %REG0
+sub b %REG2
+sub %REG0 %REG2
+sub %REG2 b
+call chamasoma
+jeq %REG2 %REG3 menor
+diferente:
+jneq %REG0 %REG1 maior
+menor:
+jlw %REG0 %REG1 diferente
+maior:
+jgt %REG1 %REG0 negative
+zero:
+move 3 %REG0
+add %REG0 b
+jz END
+negative:
+move -1 %REG0
+add %REG0 b
+jn zero
+END:

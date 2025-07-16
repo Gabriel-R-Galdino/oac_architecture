@@ -1,0 +1,44 @@
+a
+b
+jmp principal
+fim:
+ret
+soma:
+inc %REG1
+jgt %REG1 %REG2 chamaSoma
+ret
+chamaSoma:
+call soma
+ret
+principal:
+move 4 %REG0
+move %REG0 %REG3
+add %REG3 a
+store a
+move a %REG1
+inc %REG1
+store b
+move b %REG2
+add 5 %REG2
+add %REG2 b
+sub 10 %REG3
+sub b %REG1
+sub %REG1 %REG0
+sub %REG0 b
+call chamaSoma
+jeq %REG1 %REG2 checaMenor
+verifica:
+jneq %REG3 %REG2 checaMaior
+checaMenor:
+jlw %REG2 %REG1 verifica
+checaMaior:
+jgt %REG3 %REG0 resultadoNegativo
+resultadoZero:
+move 7 %REG2
+add %REG2 b
+jz FIM
+resultadoNegativo:
+move -2 %REG3
+add %REG3 b
+jn resultadoZero
+FIM:

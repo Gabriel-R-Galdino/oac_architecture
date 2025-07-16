@@ -50,8 +50,8 @@ public class ArchitectureD3 {
         REG2 = new Register("REG2", intbus1, intbus2);
         REG3 = new Register("REG3", intbus1, intbus2);
 
-        StkTOP = new Register("StkTOP", extbus1, null);//descobrir para que serve isso
-        StkBOT = new Register("StkBOT", extbus1, null);//descobrir para que serve isso
+        StkTOP = new Register("StkTOP", extbus1, null);
+        StkBOT = new Register("StkBOT", extbus1, null);
 
         PC = new Register("PC", extbus1, intbus2);
         IR = new Register("IR", extbus1, intbus2);
