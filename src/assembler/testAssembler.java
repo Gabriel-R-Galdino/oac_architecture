@@ -784,11 +784,6 @@ public class testAssembler {
 	    assertEquals("1", ass.getExecProgram().get(0));
 	}
 	
-	//@Test
-	public void testRead() {
-		fail("Not yet implemented");
-	}
-	
 
 	/** 
 	 * Métodos auxiliares via reflection	
