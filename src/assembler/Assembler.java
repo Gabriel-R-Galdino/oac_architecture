@@ -75,23 +75,6 @@ public class Assembler {
 	}	
 	
 	
-	/*
-	 * An assembly program is always in the following template
-	 * <variables>
-	 * <commands>
-	 * Obs.
-	 * 		variables names are always started with alphabetical char
-	 * 	 	variables names must contains only alphabetical and numerical chars
-	 *      variables names never uses any command name
-	 * 		names ended with ":" identifies labels i.e. address in the memory
-	 * 		Commands are only that ones known in the architecture. No comments allowed
-	 * 	
-	 * 		The assembly file must have the extention .dsf
-	 * 		The executable file must have the extention .dxf 	
-	 */
-	
-
-
 	/**
 	 * This method reads an entire file in assembly 
 	 * @param filename
@@ -105,8 +88,7 @@ public class Assembler {
 		   while ((linha = br.readLine()) != null) {
 			     lines.add(linha);
 			}
-			br.close();
-			
+			br.close();	
 	}
 	
 
@@ -266,7 +248,6 @@ public class Assembler {
 	}
 	
 	
-
 	/**
 	 * This method uses the tokens to search a command
 	 * in the commands list and returns its id.
@@ -314,10 +295,19 @@ public class Assembler {
 	}
 
 
-
-
-
-private int processAdd(String[] tokens) {
+	/**
+	 * This method processes an 'add' command.
+	 * Depending on the format of its parameters, it returns the corresponding internal command index.
+	 * Valid formats:
+	 * - add %<regA> %<regB>         → addRegARegB
+	 * - add %<reg> <memory>         → addRegMem
+	 * - add <immediate> %<reg>      → addImmReg
+	 * - add <memory> %<reg>         → addMemReg
+	 * 
+	 * @param tokens An array of strings representing the parts of the add instruction
+	 * @return Index of the corresponding internal command in the commands list
+	 */
+	private int processAdd(String[] tokens) {
 		String p1 = tokens[1];
 		String p2 = tokens[2];
 		int p=-1;
@@ -337,6 +327,19 @@ private int processAdd(String[] tokens) {
 		return p;
 	}
 	
+	
+	/**
+	 * This method processes a 'sub' command.
+	 * Depending on the format of its parameters, it returns the corresponding internal command index.
+	 * Valid formats:
+	 * - sub %<regA> %<regB>         → subRegARegB
+	 * - sub %<reg> <memory>         → subRegMem
+	 * - sub <immediate> %<reg>      → subImmReg
+	 * - sub <memory> %<reg>         → subMemReg
+	 * 
+	 * @param tokens An array of strings representing the parts of the sub instruction
+	 * @return Index of the corresponding internal command in the commands list
+	 */
 	private int processSub(String[] tokens) {
 		String p1 = tokens[1];
 		String p2 = tokens[2];
@@ -530,7 +533,7 @@ private int processAdd(String[] tokens) {
 	    Assembler assembler = new Assembler();
 	    System.out.println("Reading source assembler file: " + filename + ".dsf");
 	    assembler.read(filename);
-	    System.out.println("Generating the object program");
+	    System.out.println("Generating the object " + filename);
 	    assembler.parse();
 	    System.out.println("Generating executable: " + filename + ".dxf");
 	    assembler.makeExecutable(filename);

@@ -738,9 +738,98 @@ public class testAssembler {
 	    assertTrue("Deveria passar: todos labels e variáveis declarados", ass.checkLabels());
 	}
 	
+	@Test
+	public void testProcessAddFormatsViaReflection() {
+	    Assembler ass = new Assembler();
+
+	    String[] tokens1 = {"add", "%REG1", "%REG2"};
+	    assertTrue(invokeProcessAdd(ass, tokens1) >= 0);
+
+	    String[] tokens2 = {"add", "%REG1", "var"};
+	    assertTrue(invokeProcessAdd(ass, tokens2) >= 0);
+
+	    String[] tokens3 = {"add", "5", "%REG2"};
+	    assertTrue(invokeProcessAdd(ass, tokens3) >= 0);
+
+	    String[] tokens4 = {"add", "val", "%REG1"};
+	    assertTrue(invokeProcessAdd(ass, tokens4) >= 0);
+	}
+
+	@Test
+	public void testProcessSubFormatsViaReflection() {
+	    Assembler ass = new Assembler();
+	    String[] tokens = {"sub", "%REG1", "%REG2"};
+	    assertTrue(invokeProcessSub(ass, tokens) >= 0);
+	}
+
+	@Test
+	public void testProcessMoveFormatsViaReflection() {
+	    Assembler ass = new Assembler();
+
+	    String[] tokens1 = {"move", "%REG1", "%REG2"};
+	    String[] tokens2 = {"move", "%REG1", "var"};
+	    String[] tokens3 = {"move", "3", "%REG1"};
+	    String[] tokens4 = {"move", "val", "%REG3"};
+
+	    assertTrue(invokeProcessMove(ass, tokens1) >= 0);
+	    assertTrue(invokeProcessMove(ass, tokens2) >= 0);
+	    assertTrue(invokeProcessMove(ass, tokens3) >= 0);
+	    assertTrue(invokeProcessMove(ass, tokens4) >= 0);
+	}
+
+	@Test
+	public void testReplaceRegistersMinimal() {
+	    Assembler ass = new Assembler();
+	    ArrayList<String> exec = new ArrayList<>();
+
+	    exec.add("%REG1"); // Deve virar "1"
+	    ass.setExecProgram(exec);
+	    ass.replaceRegisters();
+
+	    assertEquals("1", ass.getExecProgram().get(0));
+	}
 	
 	//@Test
 	public void testRead() {
 		fail("Not yet implemented");
+	}
+	
+
+	/** 
+	 * Métodos auxiliares via reflection	
+	 * Usamos isso porque os métodos processAdd, processSub e proccessMove são privados, não podem ser chamados diretamente no teste.
+	 * A reflexão permite chamar métodos privados para testar seu comportamento sem alterar a visibilidade original do códio.
+	 **/
+	private int invokeProcessAdd(Assembler ass, String[] tokens) {
+	    try {
+	        java.lang.reflect.Method method = Assembler.class.getDeclaredMethod("processAdd", String[].class);
+	        method.setAccessible(true);
+	        return (int) method.invoke(ass, (Object) tokens);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+	}
+
+	private int invokeProcessSub(Assembler ass, String[] tokens) {
+	    try {
+	        java.lang.reflect.Method method = Assembler.class.getDeclaredMethod("processSub", String[].class);
+	        method.setAccessible(true);
+	        return (int) method.invoke(ass, (Object) tokens);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+	}
+
+	private int invokeProcessMove(Assembler ass, String[] tokens) {
+	    try {
+	        java.lang.reflect.Method method = Assembler.class.getDeclaredMethod("proccessMove", String[].class);
+	        method.setAccessible(true);
+	        return (int) method.invoke(ass, (Object) tokens);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
 	}
 }

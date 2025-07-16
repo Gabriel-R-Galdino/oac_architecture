@@ -1799,7 +1799,6 @@ public class ArchitectureD3 {
 	*/
 	
     public void call() {
-
         PC.internalRead();
         ula.internalStore(1);
         ula.inc();
@@ -1854,7 +1853,6 @@ public class ArchitectureD3 {
 	*/
 
     public void ret() {
-
         StkTOP.read();
         IR.store();
         IR.internalRead();

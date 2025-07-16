@@ -763,7 +763,7 @@ public class TestArchitecture {
 		arch.getRegistersList().get(7).store();
 		arch.getRegistersList().get(8).store();
 	
-	arch.call();
+		arch.call();
 	
 		arch.getPC().read();
 		assertEquals(100, arch.getExtbus1().get());
@@ -775,9 +775,9 @@ public class TestArchitecture {
 		 assertEquals(124, arch.getExtbus1().get());
 			
 
-	arch.getExtbus1().put(125);
-    arch.getMemory().read();
-    assertEquals(32, arch.getExtbus1().get());
+		arch.getExtbus1().put(125);
+	    arch.getMemory().read();
+	    assertEquals(32, arch.getExtbus1().get());
 			
 	}
 	
