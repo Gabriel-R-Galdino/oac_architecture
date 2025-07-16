@@ -1,6 +1,7 @@
 # 💻 Projeto de Arquitetura D3
 
 Projeto da disciplina de **Organização e Arquitetura de Computadores**
+
 Este repositório contém a implementação da **Arquitetura D3**, parte do projeto da disciplina de Organização e Arquitetura de Computadores. A arquitetura foi construída em **Java**, utilizando a **IDE Eclipse**, e simula uma estrutura computacional capaz de executar instruções em um formato específico de assembly, conforme detalhado abaixo.
 
 ---
