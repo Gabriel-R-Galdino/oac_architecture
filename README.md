@@ -39,7 +39,8 @@ O projeto tem como objetivo projetar e implementar diferentes arquiteturas de co
 
 ## 🧠 Diagrama da Arquitetura
 
-![Diagrama da Arquitetura D3](./69a1babb-0e97-4b0d-a7af-6491060d1b4b.png)
+<img width="527" height="382" alt="image" src="https://github.com/user-attachments/assets/1f4570b9-4c39-4cfa-a428-0587817615a2" />
+
 
 Legenda: Imagem representando a organização da Arquitetura D3 utilizada no projeto.
 
@@ -74,20 +75,20 @@ Abra o terminal na pasta do projeto (ou use o terminal do Eclipse) e execute:
 ### Para simular a arquitetura:
 
 ```bash
-java architecture <ENTRADA>
+java ArchitectureD3 <ENTRADA>
 ```
 
 ### Para simular o assembler:
 
 ```bash
-java assembler <ENTRADA>
+java Assembler <ENTRADA>
 ```
 
 **IMPORTANTE:**  
 O parâmetro `<ENTRADA>` deve ser o nome de um arquivo `.dxf` (sem a extensão). Exemplo:
 
 ```bash
-java architecture programa1
+java ArchitectureD3 program1
 ```
 
 ---
