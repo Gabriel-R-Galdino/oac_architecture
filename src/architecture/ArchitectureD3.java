@@ -32,6 +32,8 @@ public class ArchitectureD3 {
     private Register StkTOP, StkBOT;
     private Ula ula;
     private Demux demux; //only for multiple register purposes
+    
+    private boolean MemoryKey;
 
     private ArrayList<String> commandsList;
     private ArrayList<Register> registersList;
@@ -99,11 +101,12 @@ public class ArchitectureD3 {
         simulation = false;
     }
 
-    public ArchitectureD3(boolean sim) {
+    public ArchitectureD3(boolean sim, boolean key) {
         componentsInstances();
 
         //in this constructor we can set the simoualtion mode on or off
         simulation = sim;
+        MemoryKey = key;
     }
 
     //getters
@@ -2158,10 +2161,13 @@ public class ArchitectureD3 {
         if (ValBotton >= memorySize) {
             ValBotton = memorySize - 1;
         }
+        
+        if(MemoryKey) {
         int i = memorySize - 1;
-        while (i > ValBotton) {
-            System.out.println(" Mem[" + i + "]: " + memory.getDataList()[i]);
+        while (i > 0) {
+            System.out.println(" Memoria [" + i + "]: " + memory.getDataList()[i]);
             i--;
+        }
         }
 
         Scanner entrada = new Scanner(System.in);
@@ -2239,7 +2245,7 @@ public class ArchitectureD3 {
             System.exit(1); // código de erro para "arquivo não encontrado"
         }
 
-        ArchitectureD3 arch = new ArchitectureD3(true);
+        ArchitectureD3 arch = new ArchitectureD3(true, false);
         arch.readExec(filename);
         arch.controlUnitEexec();
     }

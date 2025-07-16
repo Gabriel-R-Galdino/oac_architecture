@@ -15,7 +15,7 @@ public class TestArchitecture {
 	//@Test
 	public void testShowComponentes() {
 
-		ArchitectureD3 arch = new ArchitectureD3(true);
+		ArchitectureD3 arch = new ArchitectureD3(true, false);
 		arch.getMemory().getDataList()[0]=7;
 		arch.getMemory().getDataList()[1]=2;
 		arch.getMemory().getDataList()[2]=6;
