@@ -39,10 +39,7 @@ O projeto tem como objetivo projetar e implementar diferentes arquiteturas de co
 
 ## 🧠 Diagrama da Arquitetura
 
-<img width="527" height="382" alt="image" src="https://github.com/user-attachments/assets/1f4570b9-4c39-4cfa-a428-0587817615a2" />
-
-
-Legenda: Imagem representando a organização da Arquitetura D3 utilizada no projeto.
+<p align="center"> <img width="527" height="382" alt="image" src="https://github.com/user-attachments/assets/1f4570b9-4c39-4cfa-a428-0587817615a2" /> <br /> <em>Imagem representando a organização da Arquitetura D3 utilizada no projeto.</em> </p>
 
 ---
 
