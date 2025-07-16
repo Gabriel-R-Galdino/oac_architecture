@@ -511,14 +511,29 @@ private int processAdd(String[] tokens) {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String filename = args[0];
-		Assembler assembler = new Assembler();
-		System.out.println("Reading source assembler file: "+filename+".dsf");
-		assembler.read(filename);
-		System.out.println("Generating the object program");
-		assembler.parse();
-		System.out.println("Generating executable: "+filename+".dxf");
-		assembler.makeExecutable(filename);
+		 // Verifica se exatamente um argumento foi passado
+	    if (args.length != 1) {
+	        System.err.println("Usage: Assembler <INPUT>");
+	        System.err.println("INPUT must be the name of a .dsf file, without the extension");
+	        System.exit(2);
+	    }
+
+	    String filename = args[0];
+	    File file = new File(filename + ".dsf");
+
+	    // Verifica se o arquivo .dsf existe
+	    if (!file.exists()) {
+	        System.err.println("ERROR: File \"" + filename + ".dsf\" not found.");
+	        System.exit(1);
+	    }
+
+	    Assembler assembler = new Assembler();
+	    System.out.println("Reading source assembler file: " + filename + ".dsf");
+	    assembler.read(filename);
+	    System.out.println("Generating the object program");
+	    assembler.parse();
+	    System.out.println("Generating executable: " + filename + ".dxf");
+	    assembler.makeExecutable(filename);
 	}
 		
 }

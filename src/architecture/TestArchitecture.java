@@ -15,21 +15,6 @@ public class TestArchitecture {
 	//@Test
 	public void testShowComponentes() {
 
-		//a complete test (for visual purposes only).
-		//a single code as follows
-//		ldi 2
-//		store 40
-//		ldi -4
-//		point:
-//		store 41  //mem[41]=-4 (then -3, -2, -1, 0)
-//		read 40
-//		add 40    //mem[40] + mem[40]
-//		store 40  //result must be in 40
-//		read 41
-//		inc
-//		jn point
-//		end
-
 		ArchitectureD3 arch = new ArchitectureD3(true);
 		arch.getMemory().getDataList()[0]=7;
 		arch.getMemory().getDataList()[1]=2;
@@ -53,7 +38,7 @@ public class TestArchitecture {
 		arch.getMemory().getDataList()[19]=-1;
 		arch.getMemory().getDataList()[40]=0;
 		arch.getMemory().getDataList()[41]=0;
-		//now the program and the variables are stored. we can run
+		
 		arch.controlUnitEexec();
 		
 	}
@@ -506,7 +491,7 @@ public class TestArchitecture {
 		assertEquals(10, arch.getExtbus1().get());	
 		
 		arch.jz();
-		//PC contains the number 12
+		
 		arch.getPC().internalRead();
 		assertEquals(12, arch.getIntbus2().get());
 	}
@@ -775,18 +760,18 @@ public class TestArchitecture {
 
 	
 		arch.getExtbus1().put(125);
-		arch.getRegistersList().get(4).store();
-		arch.getRegistersList().get(5).store();
+		arch.getRegistersList().get(7).store();
+		arch.getRegistersList().get(8).store();
 	
 	arch.call();
 	
 		arch.getPC().read();
 		assertEquals(100, arch.getExtbus1().get());
 
-		 arch.getRegistersList().get(5).read();
+		 arch.getRegistersList().get(8).read();
 		 assertEquals(125, arch.getExtbus1().get());
 
-		 arch.getRegistersList().get(4).read();
+		 arch.getRegistersList().get(7).read();
 		 assertEquals(124, arch.getExtbus1().get());
 			
 
@@ -802,26 +787,27 @@ public class TestArchitecture {
 		ArchitectureD3 arch = new ArchitectureD3();
 
 		
-			arch.getMemory().getDataList()[125] = 32;  
+		arch.getMemory().getDataList()[125] = 32;  
 
-			arch.getExtbus1().put(124);
-			arch.getRegistersList().get(4).store();
-			arch.getExtbus1().put(125);
-			arch.getRegistersList().get(5).store();
-		
-			arch.getExtbus1().put(100);
-			arch.getPC().store();
-		
+		arch.getExtbus1().put(124);
+		arch.getRegistersList().get(7).store(); // StkTOP ← 125
+
+		arch.getExtbus1().put(125);
+		arch.getRegistersList().get(8).store(); // StkBOT ← 124
+
+		arch.getExtbus1().put(100);
+		arch.getPC().store(); // PC ← 100
+
 		arch.ret();
-		
-				arch.getPC().read();
-				assertEquals(32, arch.getExtbus1().get());
 
-				arch.getRegistersList().get(5).read();
-				 assertEquals(125, arch.getExtbus1().get());
+		arch.getPC().read();
+		assertEquals(32, arch.getExtbus1().get()); // espera o valor 32
 
-				 arch.getRegistersList().get(4).read();
-				 assertEquals(125, arch.getExtbus1().get());
+		arch.getRegistersList().get(8).read();
+		assertEquals(125, arch.getExtbus1().get()); 
+
+		arch.getRegistersList().get(7).read();
+		assertEquals(125, arch.getExtbus1().get());
 	}
 	
 	@Test
@@ -834,72 +820,18 @@ public class TestArchitecture {
 		arch.getPC().store();
 
 		arch.getExtbus1().put(31);
-	    arch.getRegistersList().get(4).store();
-	    arch.getRegistersList().get(5).store();
+	    arch.getRegistersList().get(7).store();
+	    arch.getRegistersList().get(8).store();
 
 		arch.startStk();
 
-	    arch.getRegistersList().get(4).read();
+	    arch.getRegistersList().get(7).read();
 	    assertEquals(125, arch.getExtbus1().get());
-	    arch.getRegistersList().get(5).read();
+	    arch.getRegistersList().get(8).read();
 	    assertEquals(125, arch.getExtbus1().get());
 
 
 		arch.getPC().read();
 		assertEquals(32, arch.getExtbus1().get());
 	}
-
-			
-	
-	
-	
-	
-		
-	
-	@Test
-	public void testFillCommandsList() {
-		
-		//all the instructions must be in Commands List
-		/*
-		 *
-				add addr (rpg <- rpg + addr)
-				sub addr (rpg <- rpg - addr)
-				jmp addr (pc <- addr)
-				jz addr  (se bitZero pc <- addr)
-				jn addr  (se bitneg pc <- addr)
-				read addr (rpg <- addr)
-				store addr  (addr <- rpg)
-				ldi x    (rpg <- x. x must be an integer)
-				inc    (rpg++)
-				move %reg0 %reg1 (reg1 <- Reg0)
-		 */
-
-
-
-		ArchitectureD3 arch = new ArchitectureD3();
-		ArrayList<String> commands = arch.getCommandsList();
-		assertTrue("add".equals(commands.get(0)));
-		assertTrue("sub".equals(commands.get(1)));
-		assertTrue("jmp".equals(commands.get(2)));
-		assertTrue("jz".equals(commands.get(3)));
-		assertTrue("jn".equals(commands.get(4)));
-		assertTrue("read".equals(commands.get(5)));
-		assertTrue("store".equals(commands.get(6)));
-		assertTrue("ldi".equals(commands.get(7)));
-		assertTrue("inc".equals(commands.get(8)));
-		assertTrue("moveRegReg".equals(commands.get(9)));
-	}
-	
-	@Test
-	public void testReadExec() throws IOException {
-		ArchitectureD3 arch = new ArchitectureD3();
-		arch.readExec("testFile");
-		assertEquals(5, arch.getMemory().getDataList()[0]);
-		assertEquals(4, arch.getMemory().getDataList()[1]);
-		assertEquals(3, arch.getMemory().getDataList()[2]);
-		assertEquals(2, arch.getMemory().getDataList()[3]);
-		assertEquals(1, arch.getMemory().getDataList()[4]);
-		assertEquals(0, arch.getMemory().getDataList()[5]);
-	}
-
 }

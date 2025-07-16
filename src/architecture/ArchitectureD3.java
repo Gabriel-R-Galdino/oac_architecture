@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 import components.Bus;
 import components.Demux;
@@ -60,12 +61,7 @@ public class ArchitectureD3 {
         fillRegistersList();
         ula = new Ula(intbus1, intbus2);
 
-        // Inicializa os valores da pilha
-        extbus1.put(100);         // coloca o valor 100 no barramento externo
-        StkTOP.store();
-        extbus1.put(100);         // mesmo processo para StackBottom
-        StkBOT.store();
-
+        
         statusMemory = new Memory(2, extbus1);
         memorySize = 128;
         memory = new Memory(memorySize, extbus1);
@@ -81,15 +77,15 @@ public class ArchitectureD3 {
      */
     private void fillRegistersList() {
         registersList = new ArrayList<Register>();
-        registersList.add(REG0);
-        registersList.add(REG1);
-        registersList.add(REG2);
-        registersList.add(REG3);
-        registersList.add(PC);
-        registersList.add(IR);
-        registersList.add(Flags);
-        registersList.add(StkTOP);
-        registersList.add(StkBOT);
+        registersList.add(REG0);//0
+        registersList.add(REG1);//1
+        registersList.add(REG2);//2
+        registersList.add(REG3);//3
+        registersList.add(PC);//4
+        registersList.add(IR);//5
+        registersList.add(Flags);//6
+        registersList.add(StkTOP);//7
+        registersList.add(StkBOT);//8
     }
 
     /**
@@ -219,32 +215,6 @@ public class ArchitectureD3 {
         }
     }
 
-    /**
-     * ADIONAR OS MICROPROGRAMAS EM FORMATO DE COMENTARIO ANTES DE TRANSPOR EM
-     * FORMATO DE CODIGO DA MANEIRA QUE SE ENCONTRA ABAIXO:
-     *
-     *
-     * 1. pc -> intbus2 //pc.read() 2. ula <-  intbus2 //ula.store()
-     * 3. ula incs
-     * 4. ula -> intbus2 //ula.read() 5. pc <- intbus2 //pc.store() now pc points to the parameter
-     * 6. rpg -> intbus1 //rpg.read() the current rpg value must go to the ula
-     * 7. ula <- intbus1 //ula.store()
-     * 8. pc -> extbus (pc.read()) 9. memory reads from extbus //this forces
-     * memory to write the data position in the extbus 10. memory reads from
-     * extbus //this forces memory to write the data value in the extbus 11. rpg <- extbus (rpg.store())
-     * 12. rpg -> intbus1 (rpg.read()) 13. ula <- intbus1 //ula.store() 14.
-     * Flags <- zero //the status flags are reset
-     * 15. ula adds
-     * 16. ula -> intbus1 //ula.read() 17. ChangeFlags //informations about
-     * flags are set according the result 18. rpg <- intbus1 //rpg.store() - the add is complete.
-     * 19. pc -> intbus2 //pc.read() now pc must point the next instruction
-     * address 20. ula <- intbus2 //ula.store()
-     * 21. ula incs
-     * 22. ula -> intbus2 //ula.read() 23. pc <- intbus2 //pc.store() end @param
-     * address
-     */
-    
-    
     
     
     /*  ----------- Como Funciona o ADD Mem Reg --------------
@@ -913,7 +883,7 @@ public class ArchitectureD3 {
 	* 11. pc <- intbus2             | PC.internalStore();
 	* 12. pc -> extbus              | PC.internalRead();
 	* 13. CI: stn(0) ← extbus1      | statusMemory.storeIn0();
-	* 14. extbus <- flags           | extbus1.put(flags.getBit(1));
+	* 14. extbus <- flags           | extbus1.put(flags.getBit(0));
 	* 15. statusMemory -> extbus    | statusMemory.read();
 	* 16. pc <- extbus              | PC.internalStore();
 	//-------------- Fim do JZ ----------------------
@@ -938,7 +908,7 @@ public class ArchitectureD3 {
         PC.internalStore();
         PC.read();
         statusMemory.storeIn0();
-        extbus1.put(Flags.getBit(1));
+        extbus1.put(Flags.getBit(0));
         statusMemory.read();
         PC.store();
     }
@@ -2251,19 +2221,28 @@ public class ArchitectureD3 {
         }
     }
 
-    /**
-     * This method returns the amount of positions allowed in the memory of this
-     * architecture NOT TESTED!!!!!!!
-     *
-     * @return
-     */
+    
     public int getMemorySize() {
         return memorySize;
     }
 
     public static void main(String[] args) throws IOException {
+    	if (args.length != 1) {
+			System.err.println("Usage: ArchitectureD3 <INPUT>");
+			System.err.println("INPUT must be the name of a .dxf file, without the extension");
+			System.exit(2);
+		}
+    	
+    	String filename = args[0];
+        File file = new File(filename + ".dxf");
+
+        if (!file.exists()) {
+            System.err.println("ERROR: File \"" + filename + ".dxf\" not found.");
+            System.exit(1); // código de erro para "arquivo não encontrado"
+        }
+
         ArchitectureD3 arch = new ArchitectureD3(true);
-        arch.readExec("program");
+        arch.readExec(filename);
         arch.controlUnitEexec();
     }
 
