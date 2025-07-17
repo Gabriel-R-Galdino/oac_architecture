@@ -13,7 +13,7 @@ import components.Memory;
 import components.Register;
 import components.Ula;
 
-public class ArchitectureD3 {
+public class Architecture {
 
     private boolean simulation; //this boolean indicates if the execution is done in simulation mode.
     //simulation mode shows the components' status after each instruction
@@ -42,8 +42,7 @@ public class ArchitectureD3 {
      * Instanciates all components in this architecture
      */
     private void componentsInstances() {
-        //don't forget the instantiation order
-        //buses -> registers -> ula -> memory
+        
         extbus1 = new Bus();
         intbus1 = new Bus();
         intbus2 = new Bus();
@@ -72,11 +71,7 @@ public class ArchitectureD3 {
         fillCommandsList();
     }
 
-    /**
-     * This method fills the registers list inserting into them all the
-     * registers we have. IMPORTANT! The first register to be inserted must be
-     * the default RPG
-     */
+    
     private void fillRegistersList() {
         registersList = new ArrayList<Register>();
         registersList.add(REG0);//0
@@ -94,17 +89,17 @@ public class ArchitectureD3 {
      * Constructor that instanciates all components according the architecture
      * diagram
      */
-    public ArchitectureD3() {
+    public Architecture() {
         componentsInstances();
 
         //by default, the execution method is never simulation mode
         simulation = false;
     }
 
-    public ArchitectureD3(boolean sim, boolean key) {
+    public Architecture(boolean sim, boolean key) {
         componentsInstances();
 
-        //in this constructor we can set the simoualtion mode on or off
+      //in this constructor we can activate or deactivate the simulation mode and show the values in memory as well
         simulation = sim;
         MemoryKey = key;
     }
@@ -150,24 +145,8 @@ public class ArchitectureD3 {
         return commandsList;
     }
 
-    //Todos os microprogramas tem que estar implementado aqui
-    //the instructions table is
-    /*
-	 *
-			add addr (rpg <- rpg + addr)
-			sub addr (rpg <- rpg - addr)
-			jmp addr (pc <- addr)
-			jz addr  (se bitZero pc <- addr)
-			jn addr  (se bitneg pc <- addr)
-			read addr (rpg <- addr)
-			store addr  (addr <- rpg)
-			ldi x    (rpg <- x. x must be an integer)
-			inc    (rpg++)
-			move regA regB (regA <- regB)
-     */
     /**
      * This method fills the commands list arraylist with all commands used in
-     * this architecture
      */
     protected void fillCommandsList() {
         commandsList = new ArrayList<String>();
@@ -204,8 +183,6 @@ public class ArchitectureD3 {
     /**
      * This method is used after some ULA operations, setting the flags bits
      * according the result.
-     *
-     * @param result is the result of the operation NOT TESTED!!!!!!!
      */
     private void setStatusFlags(int result) {
         Flags.setBit(0, 0);
@@ -1954,8 +1931,7 @@ public class ArchitectureD3 {
 
     /**
      * This method reads an entire file in machine code and stores it into the
-     * memory NOT TESTED
-     *
+     * memory 
      * @param filename
      * @throws IOException
      */
@@ -2245,7 +2221,7 @@ public class ArchitectureD3 {
             System.exit(1); // código de erro para "arquivo não encontrado"
         }
 
-        ArchitectureD3 arch = new ArchitectureD3(true, false);
+        Architecture arch = new Architecture(true, false);
         arch.readExec(filename);
         arch.controlUnitEexec();
     }

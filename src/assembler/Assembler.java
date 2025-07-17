@@ -14,14 +14,14 @@ import org.hamcrest.core.IsNull;
 
 import components.Register;
 
-import architecture.ArchitectureD3;
+import architecture.Architecture;
 
 public class Assembler {
 	
 	private ArrayList<String> lines;
 	private ArrayList<String> objProgram;
 	private ArrayList<String> execProgram;
-	private ArchitectureD3 arch;
+	private Architecture arch;
 	private ArrayList<String>commands;	
 	private ArrayList<String>labels;
 	private ArrayList<Integer> labelsAdresses;
@@ -35,7 +35,7 @@ public class Assembler {
 		variables = new ArrayList<>();
 		objProgram = new ArrayList<>();
 		execProgram = new ArrayList<>();
-		arch = new ArchitectureD3();
+		arch = new Architecture();
 		commands = arch.getCommandsList();	
 	}
 	
@@ -45,10 +45,6 @@ public class Assembler {
 		return objProgram;
 	}
 	
-	/**
-	 * These methods getters and set below are used only for TDD purposes
-	 * @param lines
-	 */
 	
 	protected ArrayList<String> getLabels() {
 		return labels;

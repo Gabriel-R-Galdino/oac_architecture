@@ -15,7 +15,7 @@ public class TestArchitecture {
 	//@Test
 	public void testShowComponentes() {
 
-		ArchitectureD3 arch = new ArchitectureD3(true, false);
+		Architecture arch = new Architecture(true, false);
 		arch.getMemory().getDataList()[0]=7;
 		arch.getMemory().getDataList()[1]=2;
 		arch.getMemory().getDataList()[2]=6;
@@ -45,7 +45,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testAddRegReg() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[31] = 0;
 	    arch.getMemory().getDataList()[32] = 1;
@@ -74,7 +74,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testAddMemReg() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[40] = 5;
 
@@ -105,7 +105,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testAddRegMem() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[40] = 5;
 
@@ -137,7 +137,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testAddImmReg() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[11] = 5;
 
@@ -168,7 +168,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testSubRegReg() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[31] = 0;
 
@@ -200,7 +200,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testSubMemReg() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[40] = 5;
 
@@ -233,7 +233,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testSubRegMem() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[40] = 5;
 
@@ -269,7 +269,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testSubImmReg() {
-	    ArchitectureD3 arch = new ArchitectureD3();
+	    Architecture arch = new Architecture();
 
 	    arch.getMemory().getDataList()[11] = 5;
 
@@ -297,7 +297,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testMoveMemReg() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		arch.getMemory().getDataList()[31] = 37;
 
@@ -324,7 +324,7 @@ public class TestArchitecture {
 
 	@Test
 	public void testMoveRegMem() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		arch.getMemory().getDataList()[31] = 0;
 
@@ -353,7 +353,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testMoveRegReg() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		arch.getMemory().getDataList()[31] = 1;
 		arch.getMemory().getDataList()[32] = 0;
@@ -380,7 +380,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testMoveImmReg() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		arch.getMemory().getDataList()[31] = 1;
 
@@ -410,7 +410,7 @@ public class TestArchitecture {
 	@Test
 	public void testInc() {
 		
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		arch.getMemory().getDataList()[31] = 0;
 
@@ -431,7 +431,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJmp() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 		arch.getIntbus2().put(10);
 		arch.getPC().internalStore();
 
@@ -453,7 +453,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJz() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 		
 		arch.getIntbus2().put(10);
 		arch.getPC().internalStore();
@@ -498,7 +498,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJn() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 		
 		arch.getIntbus2().put(10);
 		arch.getPC().internalStore();
@@ -535,7 +535,7 @@ public class TestArchitecture {
 	
     @Test
     public void testeJeq(){
-        ArchitectureD3 arch = new ArchitectureD3();
+        Architecture arch = new Architecture();
 		arch.getMemory().getDataList()[11]=0;
 
 		arch.getMemory().getDataList()[12]=1;
@@ -581,7 +581,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJneq() {
-		ArchitectureD3 arch = new ArchitectureD3(); 
+		Architecture arch = new Architecture(); 
 
 
 		arch.getMemory().getDataList()[31] = 0;  
@@ -639,7 +639,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJgt() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		arch.getMemory().getDataList()[31] = 0;  
 		arch.getMemory().getDataList()[32] = 1;  
@@ -694,7 +694,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void testJlw() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 
 		arch.getMemory().getDataList()[31] = 0;  
@@ -750,7 +750,7 @@ public class TestArchitecture {
 	@Test
 	public void  testCall() {
 		
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		
 		arch.getMemory().getDataList()[31] = 100; 
@@ -784,7 +784,7 @@ public class TestArchitecture {
 	@Test
 	public void testRet() {
 		
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		
 		arch.getMemory().getDataList()[125] = 32;  
@@ -812,7 +812,7 @@ public class TestArchitecture {
 	
 	@Test
 	public void teststartStk() {
-		ArchitectureD3 arch = new ArchitectureD3();
+		Architecture arch = new Architecture();
 
 		arch.getMemory().getDataList()[31] = 125;
 		
