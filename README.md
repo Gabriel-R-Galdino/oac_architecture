@@ -74,7 +74,7 @@ Abra o terminal na pasta do projeto (ou use o terminal do Eclipse) e execute:
 ### Para simular a arquitetura:
 
 ```bash
-java ArchitectureD3 <ENTRADA>
+java Architecture <ENTRADA>
 ```
 
 ### Para simular o assembler:
@@ -87,8 +87,10 @@ java Assembler <ENTRADA>
 O parâmetro `<ENTRADA>` deve ser o nome de um arquivo `.dxf` (sem a extensão). Exemplo:
 
 ```bash
-java ArchitectureD3 program1
+ java architecture.Architecture ../program
 ```
+
+Recomendo o **run configurations** do eclipse, lá é mais fácil de passar os argumentos, ao invés do terminal.
 
 ---
 
